@@ -60,4 +60,5 @@
   "files.readonlyInclude": {
     "**/test/**": true
   },
+  "java.debug.settings.onBuildFailureProceed": true,
 }
