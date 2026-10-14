@@ -1,0 +1,95 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: testSumOfElements
+      id: testsumofelements
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testSumOfElements
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testSumOfElements test
+        timeout: 3
+        max-score: 10
+    - name: testRemoveAllInstances
+      id: testremoveallinstances
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testRemoveAllInstances
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testRemoveAllInstances test
+        timeout: 3
+        max-score: 10
+    - name: testDoubleAllElements
+      id: testdoubleallelements
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testDoubleAllElements
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testDoubleAllElements test
+        timeout: 3
+        max-score: 10
+    - name: testAddIfNotPresent
+      id: testaddifnotpresent
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testAddIfNotPresent
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testAddIfNotPresent test
+        timeout: 3
+        max-score: 10
+    - name: testGetEvenElements
+      id: testgetevenelements
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testGetEvenElements
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testGetEvenElements test
+        timeout: 3
+        max-score: 10
+    - name: testRemoveElementsDivisibleBy5
+      id: testremoveelementsdivisibleby5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testRemoveElementsDivisibleBy5
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testRemoveElementsDivisibleBy5 test
+        timeout: 3
+        max-score: 15
+    - name: testReverseList
+      id: testreverselist
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testReverseList
+        setup-command: mvn compile
+        command: mvn -Dtest=Unit7Test#testReverseList test
+        timeout: 3
+        max-score: 15
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TESTSUMOFELEMENTS_RESULTS: "${{steps.testsumofelements.outputs.result}}"
+        TESTREMOVEALLINSTANCES_RESULTS: "${{steps.testremoveallinstances.outputs.result}}"
+        TESTDOUBLEALLELEMENTS_RESULTS: "${{steps.testdoubleallelements.outputs.result}}"
+        TESTADDIFNOTPRESENT_RESULTS: "${{steps.testaddifnotpresent.outputs.result}}"
+        TESTGETEVENELEMENTS_RESULTS: "${{steps.testgetevenelements.outputs.result}}"
+        TESTREMOVEELEMENTSDIVISIBLEBY5_RESULTS: "${{steps.testremoveelementsdivisibleby5.outputs.result}}"
+        TESTREVERSELIST_RESULTS: "${{steps.testreverselist.outputs.result}}"
+      with:
+        runners: testsumofelements,testremoveallinstances,testdoubleallelements,testaddifnotpresent,testgetevenelements,testremoveelementsdivisibleby5,testreverselist
